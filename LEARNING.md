@@ -7,6 +7,8 @@
 [store](https://blog.csdn.net/qq_54074936/article/details/128555905)
 [store -- @reduxjs/toolkit](https://www.cnblogs.com/yinpengfei/p/16753677.html)
 
+[使用svg](https://blog.logrocket.com/how-to-use-svgs-react-native-tutorial-with-examples/)
+
 #### 笔记：
   * 路由跳转：
      

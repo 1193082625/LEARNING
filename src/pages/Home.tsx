@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, Image, Text, View} from 'react-native';
 import SwipeableCards from '../components/SwipeCard';
 import {useUserStore} from '../store/user';
-// import Banner from '../components/Banner';
 import {getSentences} from '../api';
 import {Badge, Icon} from '@ant-design/react-native';
+import commonStyles from '../assets/styles/common';
 
 const {width} = Dimensions.get('window');
 const bannerHeight = 60;
@@ -26,12 +26,12 @@ const cardData = [
 
 function HomeScreen() {
   const userName = useUserStore(state => state.userName);
-  const [sentences, setSentences] = useState([]);
+  const [sentences, setSentences] = useState('');
 
   useEffect(() => {
     getSentences()
       .then(res => {
-        setSentences(res.data);
+        setSentences(res?.data.content);
       })
       .catch(error => console.error(error));
   }, []);
@@ -40,8 +40,10 @@ function HomeScreen() {
     <View style={styles.homeWrapper}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.pageTitle}>你好，{userName}</Text>
-          <Text style={styles.sentence}>傲慢即愚蠢</Text>
+          <Text style={[styles.pageTitle, commonStyles.themeColor]}>
+            你好，{userName}
+          </Text>
+          <Text style={styles.sentence}>{sentences || '徐徐图之'}</Text>
         </View>
 
         <Badge text={109} dot>
@@ -49,11 +51,6 @@ function HomeScreen() {
         </Badge>
       </View>
       <View />
-      {/* <View style={styles.banner}>
-        {sentences?.length && (
-          <Banner data={sentences} showDots={false} height={bannerHeight} />
-          )}
-        </View> */}
       <View style={styles.achievements}>
         <View style={[styles.achievementsItem, styles.boxShadow]}>
           <View>
@@ -80,16 +77,10 @@ function HomeScreen() {
           />
         </View>
       </View>
-      {/* <View style={[styles.recommendArticle, styles.boxShadow]}>
-        <Text style={styles.recommendArticleTitle}>推荐文章</Text>
-        <View style={[styles.recommendList]}>
-          <Text style={styles.listItem} numberOfLines={1} ellipsizeMode="tail">
-            文章标题1文章标题1文章标题1文章标题1文章标题1文章标题1
-          </Text>
-          <Text style={styles.listItem} numberOfLines={1} ellipsizeMode="tail">
-            文章标题1文章标题1文章标题1文章标题1文章标题1
-          </Text>
-        </View>
+      {/* SVG使用 */}
+      {/* <View>
+        <BallIcon />
+        <SvgXml xml={bgXml} width="100" height="100" />
       </View> */}
       <View style={[styles.cards, styles.boxShadow]}>
         <SwipeableCards data={cardData} />
@@ -111,11 +102,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     margin: 16,
+    marginTop: 40,
+    marginBottom: 30,
   },
   pageTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#4a4a4a',
     textAlign: 'left',
   },
   sentence: {

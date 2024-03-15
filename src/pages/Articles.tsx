@@ -4,10 +4,8 @@ import {Dimensions, FlatList, StyleSheet} from 'react-native';
 import TabSwitch, {TabItem} from '../components/TabSwitch';
 import {getArticlesCategoriesData, getArticlesData} from '../api';
 import ArticleItem, {ArticleItemData} from '../components/AtricleItem';
-import {useUserStore} from '../store/user';
 
 function Articles({navigation}: any) {
-  const logout = useUserStore(state => state.logout);
   const [tabs, setTabs] = useState<TabItem[]>([]);
   const [activeTab, setActiveTab] = useState<TabItem | null>(null);
   const [articles, setArticles] = useState<ArticleItemData[]>([]);
@@ -51,7 +49,7 @@ function Articles({navigation}: any) {
   };
   // 渲染列表项
   const renderItem = ({item}: any) => (
-    <ArticleItem data={item} onItemClick={handleClick} />
+    <ArticleItem key={item._id} data={item} onItemClick={handleClick} />
   );
 
   return (

@@ -1,19 +1,24 @@
 import React, {useState} from 'react';
 import {
-  View,
   TextInput,
   TouchableOpacity,
   Text,
   StyleSheet,
+  ImageBackground,
+  Image,
+  View,
+  Dimensions,
 } from 'react-native';
 import {useUserStore} from '../store/user';
 import {post} from '../api/fetchServer';
-import {Toast} from '@ant-design/react-native';
+import {Checkbox, Toast} from '@ant-design/react-native';
 import {debounce} from 'lodash';
+import commonStyles from '../assets/styles/common';
 
 const LoginScreen: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [remberme, setRemberme] = useState(true);
   const login = useUserStore(state => state.login);
 
   //通过useSelector直接拿到store中定义的value
@@ -43,11 +48,18 @@ const LoginScreen: React.FC = () => {
     console.log(`使用${provider}登录`);
   };
 
+  const registerHandle = () => {
+    console.log('注册账号');
+  };
+
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require('../assets/imgs/bg.svg')} // 请将路径替换为你的 SVG 图片路径
+      style={styles.imageBackground}>
+      <Image style={styles.logo} source={require('../assets/imgs/logo.png')} />
       <TextInput
         style={styles.input}
-        placeholder="Username"
+        placeholder="E-mail address or phone number"
         value={username}
         onChangeText={text => setUsername(text)}
       />
@@ -58,10 +70,21 @@ const LoginScreen: React.FC = () => {
         value={password}
         onChangeText={text => setPassword(text)}
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <View
+        style={[styles.btmBox, commonStyles.flexRow, commonStyles.jutBetween]}>
+        <Checkbox
+          onChange={(e: any) => setRemberme(e.target.checked)}
+          checked={remberme}>
+          记住我
+        </Checkbox>
+        <Text style={commonStyles.primaryColor}>忘记密码?</Text>
+      </View>
+      <TouchableOpacity
+        style={[styles.button, commonStyles.themeBgColor]}
+        onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.button}
         onPress={() => handleThirdPartyLogin('Google')}>
         <Text style={styles.buttonText}>Login with Google</Text>
@@ -70,25 +93,31 @@ const LoginScreen: React.FC = () => {
         style={styles.button}
         onPress={() => handleThirdPartyLogin('Facebook')}>
         <Text style={styles.buttonText}>Login with Facebook</Text>
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+    </ImageBackground>
   );
 };
-
+const {width} = Dimensions.get('window');
 const styles = StyleSheet.create({
-  container: {
+  imageBackground: {
     flex: 1,
+    resizeMode: 'cover', // 或者 'contain'
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+  },
+  logo: {
+    width: 250,
+    height: 60,
+    marginBottom: 30,
   },
   input: {
     width: '100%',
     height: 40,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 10,
+    borderRadius: 10,
+    marginBottom: 20,
     paddingHorizontal: 10,
   },
   button: {
@@ -99,10 +128,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     marginBottom: 10,
+    marginTop: 25,
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
+  },
+  btmBox: {
+    width: width - 46,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
 });
 

@@ -11,7 +11,7 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import {Icon} from '@ant-design/react-native';
+import {Icon, Provider} from '@ant-design/react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import HomeScreen from './src/pages/Home';
 import {useUserStore} from './src/store/user';
@@ -22,15 +22,16 @@ import Feedback from './src/pages/Feedback';
 import Articles from './src/pages/Articles';
 import Practices from './src/pages/Practices';
 import Mine from './src/pages/Mine';
+import customTheme from './customTheme';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 enum TabBarName {
-  Home = '首页',
-  Articles = '发现',
-  Practices = '题库',
-  Mine = '我的',
+  Home = 'Home',
+  Articles = 'Articles',
+  Practices = 'Practices',
+  Mine = 'mine',
 }
 
 const getTabBarIcon = (route: any, focused: any, size: any, color: any) => {
@@ -50,7 +51,7 @@ const getTabBarIcon = (route: any, focused: any, size: any, color: any) => {
       break;
   }
   // You can return any component that you like here!
-  return <Icon name={iconName} size={size} color={color} />;
+  return <Icon name={iconName} size={focused ? 36 : size} color={color} />;
 };
 
 const TabNavigator = () => {
@@ -60,8 +61,15 @@ const TabNavigator = () => {
         tabBarIcon: ({focused, size, color}) => {
           return getTabBarIcon(route, focused, size, color);
         },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
+        tabBarHideOnKeyboard: true, // 当键盘显示时是否隐藏选项卡栏，默认为 false
+        tabBarShowLabel: false, // 是否显示选项卡的标签，默认为 true
+        tabBarInactiveBackgroundColor: '#fcfcfc',
+        tabBarStyle: {
+          borderTopWidth: 0,
+          backgroundColor: '#fcfcfc',
+        },
+        tabBarActiveTintColor: '#e45828',
+        tabBarInactiveTintColor: '#2a2c30',
       })}>
       <Tab.Screen
         options={{headerShown: false}}
@@ -96,42 +104,44 @@ function App(): React.JSX.Element {
   const isLogin = useUserStore(state => state.isLogin);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          {!isLogin ? (
-            <Stack.Screen
-              options={{headerShown: false, headerBackTitleVisible: false}} // Show the header for internal screens
-              name="Login"
-              component={LoginScreen}
-            />
-          ) : (
-            <>
+    <Provider theme={customTheme}>
+      <SafeAreaView style={styles.container}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {!isLogin ? (
               <Stack.Screen
-                options={{headerShown: false}} // Hide the header for first level screens
-                name="TabNavigator"
-                component={TabNavigator}
+                options={{headerShown: false, headerBackTitleVisible: false}} // Show the header for internal screens
+                name="Login"
+                component={LoginScreen}
               />
-              <Stack.Screen
-                options={pageOptions} // Show the header for internal screens
-                name="ArticleDetail"
-                component={ArticleDetails as any}
-              />
-              <Stack.Screen
-                options={pageOptions} // Show the header for internal screens
-                name="PracticeDetail"
-                component={PracticeDetails as any}
-              />
-              <Stack.Screen
-                options={pageOptions} // Show the header for internal screens
-                name="Feedback"
-                component={Feedback as any}
-              />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaView>
+            ) : (
+              <>
+                <Stack.Screen
+                  options={{headerShown: false}} // Hide the header for first level screens
+                  name="TabNavigator"
+                  component={TabNavigator}
+                />
+                <Stack.Screen
+                  options={pageOptions} // Show the header for internal screens
+                  name="ArticleDetail"
+                  component={ArticleDetails as any}
+                />
+                <Stack.Screen
+                  options={pageOptions} // Show the header for internal screens
+                  name="PracticeDetail"
+                  component={PracticeDetails as any}
+                />
+                <Stack.Screen
+                  options={pageOptions} // Show the header for internal screens
+                  name="Feedback"
+                  component={Feedback as any}
+                />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </Provider>
   );
 }
 const styles = StyleSheet.create({

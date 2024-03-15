@@ -20,6 +20,8 @@ type ArticleItemProps = PropsWithChildren<{
   onItemClick: Function;
 }>;
 const ArticleItem = ({data, onItemClick}: ArticleItemProps) => {
+  console.log('文章item', data);
+
   return (
     <TouchableHighlight
       activeOpacity={1}
