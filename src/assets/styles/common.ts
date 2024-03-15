@@ -22,6 +22,9 @@ const commonStyles = StyleSheet.create({
   pageBg: {
     backgroundColor: '#fcfcfc',
   },
+  themeBorderColor: {
+    borderColor: '#2a2c30',
+  },
   primaryColor: {
     color: '#e45828',
   },

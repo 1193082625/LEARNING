@@ -31,7 +31,7 @@ enum TabBarName {
   Home = 'Home',
   Articles = 'Articles',
   Practices = 'Practices',
-  Mine = 'mine',
+  Mine = 'Mine',
 }
 
 const getTabBarIcon = (route: any, focused: any, size: any, color: any) => {

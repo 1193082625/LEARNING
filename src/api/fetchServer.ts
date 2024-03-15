@@ -107,8 +107,8 @@ class FetchRequest {
 
     const {isLogin, token} = await FetchRequest.getStorage();
     if (isLogin) {
-      defaultOptions.headers.Authorization = `bearer ${token}`;
       const newOptions: any = {...defaultOptions, ...options};
+      newOptions.headers.Authorization = `bearer ${token}`;
       return fetch(_url, newOptions)
         .then(checkStatus)
         .then(judgeOkState)

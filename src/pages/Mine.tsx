@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
+import commonStyles from '../assets/styles/common';
 
 type MineProps = PropsWithChildren<{
   navigation: any;
@@ -21,21 +22,19 @@ const DATA = [
       {
         text: '问题反馈',
       },
-      {
-        text: '设置',
-      },
+      // {
+      //   text: '设置',
+      // },
     ],
   },
 ];
 
 function Mine({navigation}: MineProps) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, commonStyles.pageBg]}>
       <Image
         style={styles.profilePicture}
-        source={{
-          uri: 'https://reactnative.dev/img/tiny_logo.png',
-        }}
+        source={require('../assets/imgs/default_profile.jpg')}
       />
       <Text style={styles.userName}>Echo</Text>
 
@@ -59,9 +58,11 @@ function Mine({navigation}: MineProps) {
         )}
       />
 
-      <Button style={styles.logout} onPress={() => console.log('退出登录')}>
+      <Text
+        style={[styles.logout, commonStyles.themeBgColor]}
+        onPress={() => console.log('退出登录')}>
         退出登录
-      </Button>
+      </Text>
     </View>
   );
 }
@@ -94,6 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 8,
     padding: 10,
+    marginBottom: 20,
   },
   item: {
     height: 40,
@@ -115,10 +117,13 @@ const styles = StyleSheet.create({
   },
   logout: {
     width: '100%',
-    backgroundColor: '#fff',
     marginTop: 12,
     fontSize: 14,
-    borderColor: '#fff',
+    color: '#fff',
+    height: 40,
+    lineHeight: 40,
+    borderRadius: 20,
+    textAlign: 'center',
   },
 });
 

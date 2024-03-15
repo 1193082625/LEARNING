@@ -1,9 +1,10 @@
-import {SearchBar, View} from '@ant-design/react-native';
+import {View} from '@ant-design/react-native';
 import React, {useEffect, useState} from 'react';
 import {Dimensions, FlatList, StyleSheet} from 'react-native';
 import TabSwitch, {TabItem} from '../components/TabSwitch';
 import {getArticlesCategoriesData, getArticlesData} from '../api';
 import ArticleItem, {ArticleItemData} from '../components/AtricleItem';
+import commonStyles from '../assets/styles/common';
 
 function Articles({navigation}: any) {
   const [tabs, setTabs] = useState<TabItem[]>([]);
@@ -44,7 +45,7 @@ function Articles({navigation}: any) {
 
   const handleClick = (item: ArticleItemData) => {
     navigation.navigate('ArticleDetail', {
-      articleId: item.id,
+      articleId: item._id,
     });
   };
   // 渲染列表项
@@ -53,9 +54,7 @@ function Articles({navigation}: any) {
   );
 
   return (
-    <View>
-      <SearchBar placeholder="Search" showCancelButton />
-
+    <View style={commonStyles.pageBg}>
       <TabSwitch
         tabs={tabs}
         initialTab={activeTab}
@@ -65,7 +64,7 @@ function Articles({navigation}: any) {
         <FlatList
           data={articles}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._id}
         />
       </View>
     </View>
@@ -74,7 +73,7 @@ function Articles({navigation}: any) {
 const {height} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
-    height: height - 160,
+    height: height - 110,
     paddingTop: 8,
   },
   item: {

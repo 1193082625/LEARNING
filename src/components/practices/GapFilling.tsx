@@ -26,7 +26,7 @@ const GapFilling = ({data}: any) => {
       <Text>{data.title}</Text>
       {inputValues.map((value, index) => {
         return (
-          <View>
+          <View key={index}>
             <Text>{index}</Text>
             <InputItem
               clear

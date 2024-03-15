@@ -37,7 +37,7 @@ function HomeScreen() {
   }, []);
 
   return (
-    <View style={styles.homeWrapper}>
+    <View style={[styles.homeWrapper, commonStyles.pageBg]}>
       <View style={styles.header}>
         <View>
           <Text style={[styles.pageTitle, commonStyles.themeColor]}>
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
   homeWrapper: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#fcfcfc',
   },
   header: {
     width: width - 32,

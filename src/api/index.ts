@@ -33,5 +33,6 @@ export const getPracticesDetail = (id: string) => {
 
 // 问题反馈
 export const sendFeedback = (params: any) => {
+  console.log('提交反馈', params);
   return post('/feedback', params);
 };

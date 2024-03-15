@@ -3,8 +3,8 @@ import type {PropsWithChildren} from 'react';
 import {View, StyleSheet, Dimensions, RefreshControl} from 'react-native';
 import {RecyclerListView, LayoutProvider, DataProvider} from 'recyclerlistview';
 import {getPractices} from '../api';
-import {SearchBar} from '@ant-design/react-native';
 import PracticesItem from '../components/PracticesItem';
+import commonStyles from '../assets/styles/common';
 
 // 模拟数据
 const data: any[] = [];
@@ -71,8 +71,7 @@ const Practices = ({navigation}: PracticesProps) => {
 
   return (
     <View>
-      <SearchBar placeholder="Search" showCancelButton />
-      <View style={styles.container}>
+      <View style={[styles.container, commonStyles.pageBg]}>
         <RecyclerListView
           layoutProvider={layoutProvider}
           dataProvider={dataProvider}
@@ -103,7 +102,7 @@ const Practices = ({navigation}: PracticesProps) => {
 const {height} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
-    height: height - 120,
+    height: height,
     paddingTop: 8,
   },
 });

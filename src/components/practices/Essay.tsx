@@ -8,6 +8,8 @@ import {Text} from 'react-native';
 // import PracticesItem from '../PractivesItem';
 
 const Essay = ({data}: any) => {
+  console.log('aa', data);
+
   return (
     <View>
       <Text>{data.title}</Text>

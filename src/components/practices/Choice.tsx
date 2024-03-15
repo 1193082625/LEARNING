@@ -22,7 +22,7 @@ const ChoiceCom = ({data, isMulti}: any) => {
       <Text>{isMulti ? '多选题' : '单选题'}</Text>
       {data.map((item: any, index: number) => (
         <Text
-          key={item.id}
+          key={item._id}
           style={[
             styles.choiceItem,
             choicedItems.has(item.id) && styles.activeChoicedItem,

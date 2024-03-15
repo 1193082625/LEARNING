@@ -1,28 +1,25 @@
 import {Button, Tag, TextareaItem, View} from '@ant-design/react-native';
-import React, {PropsWithChildren, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import {sendFeedback} from '../api';
-
-type FeedbackProps = PropsWithChildren<{
-  navigation: any;
-}>;
+import commonStyles from '../assets/styles/common';
 
 const types = ['推荐', '题库', '发现', '搜索', '其他'];
 
-function Feedback({navigation}: FeedbackProps) {
+function Feedback({navigation}: any) {
   const [feedbackType, setFeedbackType] = useState<number>(0);
   const [feedbackContent, setFeedbackContent] = useState('');
 
   const submitData = () => {
-    console.log('提交表单', feedbackType, feedbackContent);
     sendFeedback({
       type: feedbackType,
       content: feedbackContent,
     })
-      .then(res => {
-        console.log(res.data);
-        if ((res.data.code = 200)) {
-          navigation.back();
+      .then(({code, msg}) => {
+        if (code === 0) {
+          navigation.goBack();
+        } else {
+          console.log(msg);
         }
       })
       .catch(err => {
@@ -31,7 +28,7 @@ function Feedback({navigation}: FeedbackProps) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, commonStyles.pageBg]}>
       <Text style={styles.sectionTitle}>反馈类型</Text>
       <View style={styles.types}>
         {types.map((item, idx) => {
@@ -53,7 +50,10 @@ function Feedback({navigation}: FeedbackProps) {
         placeholder="请输入300字以内的问题反馈"
         count={300}
       />
-      <Button type="primary" style={styles.submit} onPress={submitData}>
+      <Button
+        type="primary"
+        style={[styles.submit, commonStyles.themeBgColor]}
+        onPress={submitData}>
         提交反馈
       </Button>
     </View>
@@ -63,7 +63,6 @@ function Feedback({navigation}: FeedbackProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     padding: 16,
     paddingTop: 0,
   },
@@ -89,7 +88,6 @@ const styles = StyleSheet.create({
   },
   submit: {
     width: '100%',
-    backgroundColor: 'blue',
     borderRadius: 16,
     fontSize: 14,
     fontWeight: 'bold',

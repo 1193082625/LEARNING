@@ -2,11 +2,13 @@ import {RouteProp} from '@react-navigation/native';
 import React, {PropsWithChildren, useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import {getPracticesDetail} from '../api';
-import {Button} from '@ant-design/react-native';
+import {Button, Progress} from '@ant-design/react-native';
 import Programming from '../components/practices/Programming';
 import GapFilling from '../components/practices/GapFilling';
 import ChoiceCom from '../components/practices/Choice';
 import Essay from '../components/practices/Essay';
+import commonStyles from '../assets/styles/common';
+import {ProgressCom} from '../components/ProgressCom';
 
 interface PracticeDetailData {
   _id: string;
@@ -64,11 +66,11 @@ type DetailsProps = PropsWithChildren<{
 }>;
 
 enum PracticeTypes {
-  SingleChoice,
-  MultiChoice,
-  GapFilling,
-  Programming,
-  Essay,
+  SingleChoice = 1,
+  MultiChoice = 2,
+  GapFilling = 3,
+  Programming = 4,
+  Essay = 5,
 }
 
 const types = ['单选题', '多选题', '填空题', '编程题', '问答题'];
@@ -96,7 +98,18 @@ const Detail = ({data, navigation, ...props}: any) => {
 
   return (
     <>
-      <Text style={styles.tag}>{types[data.type]}</Text>
+      {/* <ProgressCom /> */}
+      <View style={[commonStyles.flexRow, commonStyles.jutBetween]}>
+        <Text
+          style={[
+            styles.tag,
+            commonStyles.themeBorderColor,
+            commonStyles.themeColor,
+          ]}>
+          {types[data.type - 1]}
+        </Text>
+        <Text style={commonStyles.primaryColor}>答题进度40%</Text>
+      </View>
       <Text style={styles.title}>{data.title}</Text>
       {ContentCom}
       <View style={styles.btnGroup}>
@@ -105,7 +118,7 @@ const Detail = ({data, navigation, ...props}: any) => {
         </Button>
         <Button
           type="primary"
-          style={[styles.btnItem, styles.btnNext]}
+          style={[styles.btnItem, styles.btnNext, commonStyles.themeBgColor]}
           onPress={() => {}}>
           下一题
         </Button>
@@ -130,7 +143,7 @@ function PracticeDetails({route, navigation, ...props}: DetailsProps) {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, commonStyles.pageBg]}>
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
@@ -143,13 +156,10 @@ function PracticeDetails({route, navigation, ...props}: DetailsProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     padding: 16,
   },
   tag: {
     borderWidth: 1,
-    borderColor: '#b0e0e6',
-    color: '#48d1cc',
     width: 80,
     lineHeight: 24,
     textAlign: 'center',
@@ -171,8 +181,6 @@ const styles = StyleSheet.create({
     height: 36,
   },
   btnNext: {
-    backgroundColor: '#48d1cc',
-    color: '#fff',
     borderWidth: 0,
   },
 });
